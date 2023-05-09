@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Chatable.dao.ChatMapper">
+  <resultMap id="BaseResultMap" type="com.Chatable.domain.Chat">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="sender" jdbcType="CHAR" property="sender" />
+    <result column="receiver" jdbcType="CHAR" property="receiver" />
+    <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
+    <result column="sender_show" jdbcType="INTEGER" property="senderShow" />
+    <result column="receiver_show" jdbcType="INTEGER" property="receiverShow" />
+    <result column="unread_sender" jdbcType="INTEGER" property="unreadSender" />
+    <result column="unread_receiver" jdbcType="INTEGER" property="unreadReceiver" />
+    <result column="chat_type" jdbcType="INTEGER" property="chatType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, sender, receiver, last_time, sender_show, receiver_show, unread_sender, unread_receiver, 
+    chat_type
+  </sql>
+  <select id="selectByExample" parameterType="com.Chatable.domain.ChatExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chat
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from chat
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.Chatable.domain.ChatExample">
+    delete from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.Chatable.domain.Chat">
+    insert into chat (id, sender, receiver, 
+      last_time, sender_show, receiver_show, 
+      unread_sender, unread_receiver, chat_type
+      )
+    values (#{id,jdbcType=CHAR}, #{sender,jdbcType=CHAR}, #{receiver,jdbcType=CHAR}, 
+      #{lastTime,jdbcType=TIMESTAMP}, #{senderShow,jdbcType=INTEGER}, #{receiverShow,jdbcType=INTEGER}, 
+      #{unreadSender,jdbcType=INTEGER}, #{unreadReceiver,jdbcType=INTEGER}, #{chatType,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.Chatable.domain.Chat">
+    insert into chat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sender != null">
+        sender,
+      </if>
+      <if test="receiver != null">
+        receiver,
+      </if>
+      <if test="lastTime != null">
+        last_time,
+      </if>
+      <if test="senderShow != null">
+        sender_show,
+      </if>
+      <if test="receiverShow != null">
+        receiver_show,
+      </if>
+      <if test="unreadSender != null">
+        unread_sender,
+      </if>
+      <if test="unreadReceiver != null">
+        unread_receiver,
+      </if>
+      <if test="chatType != null">
+        chat_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="sender != null">
+        #{sender,jdbcType=CHAR},
+      </if>
+      <if test="receiver != null">
+        #{receiver,jdbcType=CHAR},
+      </if>
+      <if test="lastTime != null">
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senderShow != null">
+        #{senderShow,jdbcType=INTEGER},
+      </if>
+      <if test="receiverShow != null">
+        #{receiverShow,jdbcType=INTEGER},
+      </if>
+      <if test="unreadSender != null">
+        #{unreadSender,jdbcType=INTEGER},
+      </if>
+      <if test="unreadReceiver != null">
+        #{unreadReceiver,jdbcType=INTEGER},
+      </if>
+      <if test="chatType != null">
+        #{chatType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.Chatable.domain.ChatExample" resultType="java.lang.Long">
+    select count(*) from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update chat
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=CHAR},
+      </if>
+      <if test="record.sender != null">
+        sender = #{record.sender,jdbcType=CHAR},
+      </if>
+      <if test="record.receiver != null">
+        receiver = #{record.receiver,jdbcType=CHAR},
+      </if>
+      <if test="record.lastTime != null">
+        last_time = #{record.lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.senderShow != null">
+        sender_show = #{record.senderShow,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverShow != null">
+        receiver_show = #{record.receiverShow,jdbcType=INTEGER},
+      </if>
+      <if test="record.unreadSender != null">
+        unread_sender = #{record.unreadSender,jdbcType=INTEGER},
+      </if>
+      <if test="record.unreadReceiver != null">
+        unread_receiver = #{record.unreadReceiver,jdbcType=INTEGER},
+      </if>
+      <if test="record.chatType != null">
+        chat_type = #{record.chatType,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update chat
+    set id = #{record.id,jdbcType=CHAR},
+      sender = #{record.sender,jdbcType=CHAR},
+      receiver = #{record.receiver,jdbcType=CHAR},
+      last_time = #{record.lastTime,jdbcType=TIMESTAMP},
+      sender_show = #{record.senderShow,jdbcType=INTEGER},
+      receiver_show = #{record.receiverShow,jdbcType=INTEGER},
+      unread_sender = #{record.unreadSender,jdbcType=INTEGER},
+      unread_receiver = #{record.unreadReceiver,jdbcType=INTEGER},
+      chat_type = #{record.chatType,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Chatable.domain.Chat">
+    update chat
+    <set>
+      <if test="sender != null">
+        sender = #{sender,jdbcType=CHAR},
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=CHAR},
+      </if>
+      <if test="lastTime != null">
+        last_time = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senderShow != null">
+        sender_show = #{senderShow,jdbcType=INTEGER},
+      </if>
+      <if test="receiverShow != null">
+        receiver_show = #{receiverShow,jdbcType=INTEGER},
+      </if>
+      <if test="unreadSender != null">
+        unread_sender = #{unreadSender,jdbcType=INTEGER},
+      </if>
+      <if test="unreadReceiver != null">
+        unread_receiver = #{unreadReceiver,jdbcType=INTEGER},
+      </if>
+      <if test="chatType != null">
+        chat_type = #{chatType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Chatable.domain.Chat">
+    update chat
+    set sender = #{sender,jdbcType=CHAR},
+      receiver = #{receiver,jdbcType=CHAR},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      sender_show = #{senderShow,jdbcType=INTEGER},
+      receiver_show = #{receiverShow,jdbcType=INTEGER},
+      unread_sender = #{unreadSender,jdbcType=INTEGER},
+      unread_receiver = #{unreadReceiver,jdbcType=INTEGER},
+      chat_type = #{chatType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>
